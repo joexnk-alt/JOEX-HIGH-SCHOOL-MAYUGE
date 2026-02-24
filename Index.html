@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>JOEX High School - Report Card System-if one can i can</title>
+    <title>JOEX High School - Report Card System</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0f2f5; padding: 20px; }
+        body { font-family: ALEGRIAN, sans-serif; background-color: #f0f2f5; padding: 20px; }
         .app-container { max-width: 900px; margin: auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         
         /* Header style matching your UI */
@@ -49,7 +49,7 @@
     <div id="printable-report">
         <center>
             <h2>JOEX HIGH SCHOOL <h2>
-            </h3>OFFICIAL STUDENT REPORT CARD</h3>
+            </h3> STUDENT REPORT CARD</h3>
             <p><strong>Name:</strong> <span id="displayName">_______</span> | <strong>Class:</strong> <span id="displayClass">_______</span></p>
         </center>
 
@@ -77,10 +77,10 @@
 
 <script>
     function calculateGrade(mark) {
-        if (mark >= 80) return {g: "A", r: "Excellent"};
-        if (mark >= 70) return {g: "B", r: "Very Good"};
-        if (mark >= 60) return {g: "C", r: "Good"};
-        if (mark >= 50) return {g: "D", r: "Pass"};
+        if (mark >= 90) return {g: "A", r: "OUTSTANDING"};
+        if (mark >= 80) return {g: "B", r: "SATISFACTORY"};
+        if (mark >= 55) return {g: "C", r: "MODERATE"};
+        if (mark >= 45) return {g: "D", r: "BASIC"};
         return {g: "F", r: "Fail"};
     }
 
