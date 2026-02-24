@@ -1,39 +1,144 @@
-<div id="report-card" class="report-container">
-    <div class="report-header">
-        <img src="logo.png" alt="JOEX Logo" class="report-logo">
-        <h2>JOEX HIGH SCHOOL</h2>
-        <p>Official Student Progress Report</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOEX High School - Report Card System</title>
+    <style>
+        /* General Styling */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        
+        /* Header Section */
+        .school-header { text-align: center; border-bottom: 3px solid #1a237e; padding-bottom: 10px; margin-bottom: 20px; }
+        .school-header h1 { margin: 0; color: #1a237e; letter-spacing: 2px; }
+        
+        /* Input Form Styling */
+        .input-section { background: #eef1f7; padding: 20px; border-radius: 5px; margin-bottom: 30px; }
+        .input-group { margin-bottom: 15px; display: flex; gap: 10px; align-items: center; }
+        input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; flex: 1; }
+        button { padding: 10px 20px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; transition: 0.3s; }
+        .btn-generate { background-color: #1a237e; color: white; width: 100%; }
+        .btn-generate:hover { background-color: #0d1440; }
+
+        /* Report Card Table Styling */
+        .report-card { display: none; border: 2px solid #333; padding: 30px; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #444; padding: 12px; text-align: center; }
+        th { background-color: #f2f2f2; }
+        .student-meta { display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold; }
+
+        /* Print Controls */
+        @media print {
+            .input-section, .btn-generate, .print-btn { display: none; }
+            .report-card { display: block !important; border: none; }
+            body { background: white; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="school-header">
+        <h1>JOEX HIGH SCHOOL</h1>
+        <p><em>"Excellence in Every Step"</em></p>
     </div>
 
-    <hr>
-
-    <div class="student-info">
-        <p><strong>Student Name:</strong> <span id="display-name">IGULU JOEL</span></p>
-        <p><strong>Term:</strong> First Term 2026</p>
+    <div class="input-section">
+        <h3>Enter Student Details & Marks</h3>
+        <div class="input-group">
+            <input type="text" id="studentName" placeholder="Full Student Name">
+            <input type="text" id="studentClass" placeholder="Class (e.g. Senior 4)">
+        </div>
+        <hr>
+        <div class="input-group">
+            <input type="text" class="subject-name" value="Mathematics" readonly>
+            <input type="number" class="subject-mark" placeholder="Mark (0-100)" min="0" max="100">
+        </div>
+        <div class="input-group">
+            <input type="text" class="subject-name" value="English Language" readonly>
+            <input type="number" class="subject-mark" placeholder="Mark (0-100)" min="0" max="100">
+        </div>
+        <div class="input-group">
+            <input type="text" class="subject-name" value="Science" readonly>
+            <input type="number" class="subject-mark" placeholder="Mark (0-100)" min="0" max="100">
+        </div>
+        <button class="btn-generate" onclick="generateReport()">Generate Electronic Report Card</button>
     </div>
 
-    <table class="report-table">
-        <thead>
-            <tr>
-                <th>Math
-                English 
-                Biology 
-                Chemistry
-                ICT
-                Physics 
-                History
-                Geography 
-                CRE</th>
-                <th>90
-                80
-                76
-                98
-                98
-                89
-                87
-                85
-                92</th>
-                <th>D1
+    <div id="reportCard" class="report-card">
+        <center><h3>OFFICIAL PROGRESS REPORT</h3></center>
+        <div class="student-meta">
+            <span>NAME: <span id="resName"></span></span>
+            <span>CLASS: <span id="resClass"></span></span>
+            <span>TERM: 1 - 2026</span>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Score</th>
+                    <th>Grade</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody id="reportTableBody">
+                </tbody>
+        </table>
+
+        <div style="margin-top: 40px; display: flex; justify-content: space-between;">
+            <div><p>Teacher's Sign: ______________</p></div>
+            <div><p>School Stamp: [ SEAL ]</p></div>
+        </div>
+        <button class="print-btn" onclick="window.print()" style="margin-top:20px; background:#4CAF50; color:white;">Print to PDF</button>
+    </div>
+</div>
+
+<script>
+    function getGrade(mark) {
+        if (mark >= 80) return { g: "A", r: "Excellent" };
+        if (mark >= 70) return { g: "B", r: "Very Good" };
+        if (mark >= 60) return { g: "C", r: "Good" };
+        if (mark >= 50) return { g: "D", r: "Fair" };
+        return { g: "F", r: "Improvement Needed" };
+    }
+
+    function generateReport() {
+        // Get Student Info
+        const name = document.getElementById('studentName').value;
+        const sClass = document.getElementById('studentClass').value;
+        
+        if(!name || !sClass) { alert("Please enter Student Name and Class"); return; }
+
+        document.getElementById('resName').innerText = name;
+        document.getElementById('resClass').innerText = sClass;
+
+        // Get Marks and Subjects
+        const subjectNames = document.querySelectorAll('.subject-name');
+        const subjectMarks = document.querySelectorAll('.subject-mark');
+        let tableHTML = "";
+
+        for (let i = 0; i < subjectNames.length; i++) {
+            let mark = parseInt(subjectMarks[i].value) || 0;
+            let result = getGrade(mark);
+            
+            tableHTML += `<tr>
+                <td>${subjectNames[i].value}</td>
+                <td>${mark}</td>
+                <td>${result.g}</td>
+                <td>${result.r}</td>
+            </tr>`;
+        }
+
+        document.getElementById('reportTableBody').innerHTML = tableHTML;
+        document.getElementById('reportCard').style.display = 'block';
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+</script>
+
+</body>
+</html>
                 D1
                 D2
                 D1
